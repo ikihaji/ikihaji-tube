@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@ikihaji-tube/tsconfig/tsconfig.bun.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/",
+    "paths": {
+      "#scrobble-client/*": ["./src/*"],
+      "~scrobble-client/*": ["./*"]
+    }
+  },
+  "include": ["./src/**/*", "./*.*js", "./*.*ts"],
+  "exclude": ["**/node_modules/**/*"]
+}

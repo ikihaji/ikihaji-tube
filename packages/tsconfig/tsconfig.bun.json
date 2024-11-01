@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // https://github.com/tsconfig/bases/blob/main/bases/bun.json
+  "extends": ["./tsconfig.strictest.json", "@tsconfig/bun/tsconfig"]
+}

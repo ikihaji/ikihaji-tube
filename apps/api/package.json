@@ -1,0 +1,23 @@
+{
+  "name": "@ikihaji-tube/api",
+  "version": "0.1.0",
+  "repository": "https://github.com/ikihaji/ikihaji-tube.git",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "bun ./src/app/index.ts --watch",
+    "build": "bun build ./src/app/index.ts --compile --minify --outfile ./dist/api --target bun",
+    "start": "./dist/api",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "elysia": "1.1.23"
+  },
+  "devDependencies": {
+    "@ikihaji-tube/tsconfig": "workspace:*"
+  }
+}

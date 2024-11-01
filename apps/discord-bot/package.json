@@ -1,0 +1,25 @@
+{
+  "name": "@ikihaji-tube/discord-bot",
+  "version": "0.1.0",
+  "repository": "https://github.com/ikihaji/ikihaji-tube.git",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "bun ./src/index.ts --watch",
+    "build": "bun build ./src/index.ts --compile --minify --outfile ./dist/discord-bot --target bun",
+    "start": "./dist/discord-bot",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@elysiajs/eden": "1.1.3",
+    "@ikihaji-tube/api": "workspace:*",
+    "discord.js": "14.16.3"
+  },
+  "devDependencies": {
+    "@ikihaji-tube/tsconfig": "workspace:*"
+  }
+}

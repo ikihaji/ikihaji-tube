@@ -1,0 +1,41 @@
+ARG PORT
+ARG TURBO_TEAM
+ARG TURBO_TOKEN
+
+# hadolint ignore=DL3007
+FROM ubuntu:latest AS builder
+ENV TURBO_TEAM=${TURBO_TEAM}
+ENV TURBO_TOKEN=${TURBO_TOKEN}
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008
+RUN apt-get update \
+  && apt-get --no-install-recommends -y install ca-certificates curl git gnupg2 unzip xz-utils \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists
+
+RUN curl -fsSL https://moonrepo.dev/install/proto.sh | bash -s -- --yes \
+  && echo "export PATH=$PATH:/root/.proto/bin:/root/.proto/shims" >> ~/.bashrc \
+  && source ~/.bashrc
+
+WORKDIR /workspaces/ikihaji-tube/
+
+COPY ./ ./
+RUN /root/.proto/bin/proto use \
+  && /root/.proto/shims/bun install --frozen-lockfile --ignore-scripts
+# hadolint ignore=DL3059
+RUN /root/.proto/shims/bun turbo run --filter='@ikihaji-tube/api' build
+
+FROM gcr.io/distroless/base-debian12:nonroot AS runner
+ENV NODE_ENV=production
+
+WORKDIR /workspaces/ikihaji-tube/
+
+COPY --chown=nonroot:nonroot --from=builder /workspaces/ikihaji-tube/apps/api/dist/ ./apps/api/dist/
+
+WORKDIR /workspaces/ikihaji-tube/apps/api/
+
+USER nonroot
+EXPOSE ${PORT}
+ENTRYPOINT ["./dist/api"]

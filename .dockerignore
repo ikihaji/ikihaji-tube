@@ -1,0 +1,18 @@
+# deliverable
+**/build/
+**/dist/
+**/out/
+
+# dependency
+**/node_modules/
+
+# env file
+**/.env*
+!**/.env.example
+
+# misc
+**/.DS_Store
+**/*.pem
+
+# turbo
+**/.turbo/

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env*", "biome.json"],
+  "tasks": {
+    "generate": {
+      "dependsOn": ["^generate"],
+      "outputs": ["dist/**", "generated/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "check": {
+      "cache": false,
+      "dependsOn": ["^generate", "generate"]
+    },
+    "check:fix": {
+      "dependsOn": ["^generate", "generate"]
+    },
+    "build": {
+      "dependsOn": ["^generate", "generate", "^build"],
+      "outputs": ["dist/**"]
+    },
+    "test": {
+      "dependsOn": ["^build", "build"]
+    }
+  },
+  "ui": "tui"
+}

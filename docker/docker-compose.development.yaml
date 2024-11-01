@@ -1,0 +1,11 @@
+services:
+  app:
+    container_name: ikihaji-tube-app
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.development
+    volumes:
+      - type: bind
+        source: ../
+        target: /workspaces/ikihaji-tube/
+    tty: true

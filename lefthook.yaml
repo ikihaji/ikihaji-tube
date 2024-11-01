@@ -1,0 +1,7 @@
+pre-commit:
+  parallel: true
+  commands:
+    check-fix:
+      glob: "*.*{js,ts,json}*"
+      run: bun biome check --write {staged_files}
+      stage_fixed: true

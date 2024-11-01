@@ -1,0 +1,24 @@
+{
+  "name": "ikihaji-tube",
+  "version": "0.1.0",
+  "repository": "https://github.com/ikihaji/ikihaji-tube.git",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "bun@1.1.33",
+  "scripts": {
+    "prepare": "lefthook install",
+    "api": "bun --cwd ./apps/api",
+    "discord-bot": "bun --cwd ./apps/discord-bot",
+    "scrobble-client": "bun --cwd ./apps/scrobble-client",
+    "tsconfig": "bun --cwd ./packages/tsconfig"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "1.1.12",
+    "dotenv-cli": "7.4.2",
+    "lefthook": "1.8.2",
+    "turbo": "2.2.3",
+    "typescript": "5.6.3"
+  },
+  "workspaces": ["apps/*", "packages/*"]
+}

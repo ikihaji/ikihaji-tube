@@ -1,0 +1,35 @@
+name: app test
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.1.33
+
+      - name: get bun cache directory
+        id: get-bun-cache-directory
+        run: echo "STORE_PATH=$(bun pm cache)" >> $GITHUB_OUTPUT
+
+      - name: cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.get-bun-cache-directory.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-bun-dependencies-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: ${{ runner.os }}-bun-dependencies-
+
+      - name: install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: check
+        run: bun turbo run check
+
+      - name: test
+        run: bun turbo run test

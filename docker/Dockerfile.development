@@ -1,0 +1,19 @@
+# hadolint ignore=DL3007
+FROM ubuntu:latest
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008
+RUN apt-get update \
+  && apt-get --no-install-recommends -y install ca-certificates curl git gnupg2 unzip xz-utils \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists
+
+RUN curl -fsSL https://moonrepo.dev/install/proto.sh | bash -s -- --yes \
+  && echo "export PATH=$PATH:/root/.proto/bin:/root/.proto/shims" >> ~/.bashrc \
+  && source ~/.bashrc
+
+WORKDIR /workspaces/ikihaji-tube/
+
+COPY ./ ./
+RUN /root/.proto/bin/proto use && /root/.proto/shims/bun install --frozen-lockfile

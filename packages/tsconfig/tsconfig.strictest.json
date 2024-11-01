@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // https://github.com/tsconfig/bases/blob/main/bases/strictest.json
+  "extends": ["@tsconfig/strictest/tsconfig.json"],
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "ikihaji-tube",
+  "workspaceFolder": "/workspaces/ikihaji-tube/",
+  "dockerComposeFile": ["../docker/docker-compose.development.yaml"],
+  "service": "app",
+  "customizations": {
+    "vscode": {
+      "extensions": ["biomejs.biome", "editorconfig.editorconfig", "esbenp.prettier-vscode", "oven.bun-vscode"]
+    }
+  }
+}

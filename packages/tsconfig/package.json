@@ -1,0 +1,15 @@
+{
+  "name": "@ikihaji-tube/tsconfig",
+  "version": "0.1.0",
+  "repository": "https://github.com/ikihaji/ikihaji-tube.git",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "check": "biome check .",
+    "check:fix": "biome check --write ."
+  },
+  "devDependencies": {
+    "@tsconfig/bun": "1.0.7",
+    "@tsconfig/strictest": "2.0.5"
+  }
+}
