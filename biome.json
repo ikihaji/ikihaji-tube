@@ -51,7 +51,8 @@
       "trailingCommas": "all",
       "arrowParentheses": "asNeeded",
       "bracketSpacing": true
-    }
+    },
+    "globals": ["chrome"]
   },
   "json": {
     "parser": {

@@ -5,8 +5,8 @@
     "baseUrl": "./",
     "outDir": "./dist/",
     "paths": {
-      "#scrobble-client/*": ["./src/*"],
-      "~scrobble-client/*": ["./*"]
+      "#scrobble-chrome-extension/*": ["./src/*"],
+      "~scrobble-chrome-extension/*": ["./*"]
     }
   },
   "include": ["./src/**/*", "./*.*js", "./*.*ts"],

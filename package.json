@@ -9,7 +9,7 @@
     "prepare": "lefthook install",
     "api": "bun --cwd ./apps/api",
     "discord-bot": "bun --cwd ./apps/discord-bot",
-    "scrobble-client": "bun --cwd ./apps/scrobble-client",
+    "scrobble-chrome-extension": "bun --cwd ./apps/scrobble-chrome-extension",
     "tsconfig": "bun --cwd ./packages/tsconfig"
   },
   "devDependencies": {

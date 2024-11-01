@@ -17,6 +17,9 @@ export const app = new Elysia({
   .post(
     '/users/:id/viewing-history',
     ({ body, params }) => {
+      // biome-ignore lint/suspicious/noConsoleLog:
+      console.log('[/users/:id/viewing-history]', body, params);
+
       const user = users.find(user => user.id === params.id);
 
       if (!user) {
@@ -31,6 +34,9 @@ export const app = new Elysia({
 
       user.viewingHistory.push(...body);
 
+      // biome-ignore lint/suspicious/noConsoleLog:
+      console.log('[/users/:id/viewing-history]', user.viewingHistory);
+
       return { status: 200, body: user.viewingHistory };
     },
     {
@@ -38,8 +44,7 @@ export const app = new Elysia({
         t.Object({
           id: t.String(),
           title: t.String(),
-          channel: t.String(),
-          thumnailUrl: t.String({ format: 'uri' }),
+          thumbnailUrl: t.String({ format: 'uri' }),
         } satisfies Record<keyof Video, TSchema>),
       ),
     },
