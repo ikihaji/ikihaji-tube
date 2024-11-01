@@ -9,13 +9,13 @@ const getApiBaseUrl = () => {
   // so following is described in the form of a Immediately Invoked Function Expression.
   const baseUrl = (() => {
     if (typeof process === 'undefined') {
-      return new URL('https://ikihaji-tube-api.up.railway.app/api');
+      return new URL('https://ikihaji-tube-api.up.railway.app');
     }
     if (process.env['IKIHAJI_TUBE_API_ENDPOINT']) {
       return new URL(process.env['IKIHAJI_TUBE_API_ENDPOINT']);
     }
     if (process.env['NODE_ENV'] === 'production') {
-      return new URL('https://ikihaji-tube-api.up.railway.app/api');
+      return new URL('https://ikihaji-tube-api.up.railway.app');
     }
 
     return new URL(`http://localhost:${process.env['PORT'] || 4000}`);
@@ -31,7 +31,7 @@ const getApiBaseUrl = () => {
  * @example
  * ```ts
  * const baseUrl = getBaseUrl({ app: 'api' });
- * // => https://ikihaji-tube-api.up.railway.app/api
+ * // => https://ikihaji-tube-api.up.railway.app
  * ```
  */
 export const getBaseUrl = ({ app }: GetBaseUrlConfig) => {
