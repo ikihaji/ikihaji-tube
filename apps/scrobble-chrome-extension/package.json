@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "bun --watch run ./src/index.ts",
     "build": "bun build ./src/*.ts --minify --outdir ./dist/",
-    "start": "./dist/scrobble-chrome-extension",
     "check": "biome check .",
     "check:fix": "biome check --write .",
     "test": "bun test"
