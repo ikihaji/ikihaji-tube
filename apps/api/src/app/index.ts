@@ -1,3 +1,4 @@
+import { cors } from '@elysiajs/cors';
 import type { User, Video } from '@ikihaji-tube/core/model';
 import { Elysia, type TSchema, t } from 'elysia';
 
@@ -6,6 +7,12 @@ const users: User[] = [];
 export const app = new Elysia({
   prefix: '/api',
 })
+  .use(
+    cors({
+      origin: '*',
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }),
+  )
   .get('/', () => 'Hello, world!')
   .post(
     '/users/:id/viewing-history',
