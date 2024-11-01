@@ -8,6 +8,9 @@ const getApiBaseUrl = () => {
   // HACK: Due to unknown causes, URLs as types cannot be uniquely resolved,
   // so following is described in the form of a Immediately Invoked Function Expression.
   const baseUrl = (() => {
+    if (typeof process === 'undefined') {
+      return new URL('https://ikihaji-tube-api.up.railway.app/api');
+    }
     if (process.env['IKIHAJI_TUBE_API_ENDPOINT']) {
       return new URL(process.env['IKIHAJI_TUBE_API_ENDPOINT']);
     }
