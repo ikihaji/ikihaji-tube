@@ -14,6 +14,18 @@ export const app = new Elysia({
     }),
   )
   .get('/', () => 'Hello, world!')
+  .get('/users', () => {
+    return users;
+  })
+  .get('/users/:id', ({ params }) => {
+    const userid = params.id;
+    const user = users.find(user => user.id === userid);
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  })
   .post(
     '/users/:id/viewing-history',
     ({ body, params }) => {
