@@ -1,6 +1,6 @@
 import type { Client } from 'discord.js';
-import { autoRandomCommand } from '#discord-bot/auto/autoRandom';
-import { autoRelationCommand } from '#discord-bot/auto/autoRelation';
+// import { autoRandomCommand } from '#discord-bot/auto/autoRandom';
+// import { autoRelationCommand } from '#discord-bot/auto/autoRelation';
 
 // src/scheduler.ts
 export function startCronJob(channelId: string, client: Client) {
@@ -23,8 +23,8 @@ export function startCronJob(channelId: string, client: Client) {
 // 実際の動作
 function executeTask(channelId: string, client: Client) {
   // 定期実行される処理
-  autoRelationCommand(channelId, client);
-  autoRandomCommand(channelId, client);
+  // autoRelationCommand(channelId, client);
+  // autoRandomCommand(channelId, client);
   // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log('Job that execute in every 0 am has executed.', new Date());
 }
