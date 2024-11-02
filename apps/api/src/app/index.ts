@@ -15,14 +15,23 @@ export const app = new Elysia({
   )
   .get('/', () => 'Hello, world!')
   .get('/users', () => {
+    // biome-ignore lint/suspicious/noConsoleLog:
+    console.log('[/users]', users);
+
     return users;
   })
   .get('/users/:id', ({ params }) => {
     const userid = params.id;
+    // biome-ignore lint/suspicious/noConsoleLog:
+    console.log('[/users/:id]', userid);
+
     const user = users.find(user => user.id === userid);
     if (!user) {
       return null;
     }
+
+    // biome-ignore lint/suspicious/noConsoleLog:
+    console.log('[/users/:id]', user);
 
     return user;
   })
