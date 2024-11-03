@@ -53,6 +53,8 @@ export const viewingRandom = async (
           new EmbedBuilder()
             .setTitle('視聴履歴がありません')
             .setDescription('まずは動画を視聴してみましょう！')
+            .setFooter({ text: 'Random selection of videos viewed by each user individually' })
+            .setTimestamp()
             .setColor(0xc37d9b),
         ];
 
