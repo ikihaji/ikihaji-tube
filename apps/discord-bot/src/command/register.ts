@@ -15,5 +15,5 @@ export const registerCommand = async (interaction: CommandInteraction, client: C
       reason: 'Webhook to send viewing summary to the channel.',
     }));
 
-  await interaction.reply(`${interaction.channel} で ${webhook.name} が定期実行するように設定されました。`);
+  await interaction.reply(`${interaction.channel} で ${webhook.name} が定期実行するように設定しました。`);
 };

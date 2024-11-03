@@ -63,9 +63,9 @@ export const viewingSummary = async (
 
             const usersJoined = coViewers.map(member => `<@${member.id}>`).join(' と ');
             return new EmbedBuilder()
-              .setTitle('複数人が視聴していた動画があります！')
+              .setTitle('複数人が視聴した動画があります！')
               .setDescription(
-                `${usersJoined} はこの動画を視聴していました\n[${relation.video.title}](https://www.youtube.com/watch?v=${relation.video.id})`,
+                `${usersJoined} はこの動画を視聴しました\n[${relation.video.title}](https://www.youtube.com/watch?v=${relation.video.id})`,
               )
               .setImage(`${relation.video.thumbnailUrl}`)
               .setFooter({ text: 'Videos viewed by multiple users' })
@@ -75,7 +75,8 @@ export const viewingSummary = async (
         )
       : [
           new EmbedBuilder()
-            .setTitle('複数人が視聴していた動画はありませんでした')
+            .setTitle('複数人が視聴した動画はありません')
+            .setDescription('まずは動画を視聴してみましょう！')
             .setFooter({ text: 'Videos viewed by multiple users' })
             .setTimestamp()
             .setColor(0xc37d9b),

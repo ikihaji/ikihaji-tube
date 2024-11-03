@@ -40,7 +40,7 @@ export const viewingRandom = async (
             }
 
             return new EmbedBuilder()
-              .setTitle(`<@${viewedUser.id}> はこの動画を視聴していました`)
+              .setTitle(`<@${viewedUser.id}> がこの動画を視聴しました`)
               .setThumbnail(`${viewedUser.user.displayAvatarURL()}`)
               .setDescription(`[${randomVideo.title}](https://www.youtube.com/watch?v=${randomVideo.id})`)
               .setImage(`${randomVideo.thumbnailUrl}`)
