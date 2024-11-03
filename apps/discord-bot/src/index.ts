@@ -1,5 +1,5 @@
+import { Cron } from 'croner';
 import { type ApplicationCommandData, Client, Events, GatewayIntentBits } from 'discord.js';
-import cron from 'node-cron';
 import { match } from 'ts-pattern';
 import { registerCommand } from './command/register';
 import { viewingRandom, viewingRandomCommand } from './command/viewing-random';
@@ -63,9 +63,21 @@ client.on('guildCreate', async guild => {
 client.once(Events.ClientReady, async client => {
   await client.application.commands.set(commands);
 
-  await cron.schedule(
+  const webhookJob = new Cron(
     process.env['CRON_SCHEDULE'] ?? '* * * * *',
-    async () => {
+    {
+      protect: job => {
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log(
+          `Call at ${new Date().toISOString()} were blocked by call started at ${job.currentRun()?.toISOString()}`,
+        );
+      },
+      timezone: process.env['CRON_TIMEZONE'] ?? 'Asia/Tokyo',
+    },
+    async (job: Cron) => {
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+      console.log(`Call started at ${job.currentRun()?.toISOString()} started`);
+
       const webhookCollections = await Promise.all(
         client.guilds.cache.map(async guild => {
           const webhooks = await guild.fetchWebhooks();
@@ -101,8 +113,9 @@ client.once(Events.ClientReady, async client => {
         }),
       );
     },
-    { timezone: 'Asia/Tokyo' },
   );
+
+  webhookJob.schedule();
 
   // biome-ignore lint/suspicious/noConsoleLog: This log is necessary to verify that the server is running properly.
   console.log(`IkihajiTube Bot is running as ${client.user.tag} 🚀`);
