@@ -35,9 +35,24 @@ client.on(Events.InteractionCreate, async interaction => {
   }
 
   match(interaction.commandName as (typeof commands)[number]['name'])
-    .with('register', () => registerCommand(interaction, client))
-    .with('viewing_random', () => viewingRandomCommand(interaction))
-    .with('viewing_summary', () => viewingSummaryCommand(interaction))
+    .with('register', () => {
+      // biome-ignore lint/suspicious/noConsoleLog:
+      console.log('`/register` command is called in guild: ', interaction.guild?.name);
+
+      registerCommand(interaction, client);
+    })
+    .with('viewing_random', () => {
+      // biome-ignore lint/suspicious/noConsoleLog:
+      console.log('`/viewing_random` command is called in guild: ', interaction.guild?.name);
+
+      viewingRandomCommand(interaction);
+    })
+    .with('viewing_summary', () => {
+      // biome-ignore lint/suspicious/noConsoleLog:
+      console.log('`/viewing_summary` command is called in guild: ', interaction.guild?.name);
+
+      viewingSummaryCommand(interaction);
+    })
     .exhaustive();
 });
 
