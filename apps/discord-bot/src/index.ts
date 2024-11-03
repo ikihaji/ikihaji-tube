@@ -48,7 +48,7 @@ client.on('guildCreate', async guild => {
 client.once(Events.ClientReady, async client => {
   await client.application.commands.set(commands);
 
-  await cron.schedule(process.env['CRON_SCHEDULE']!, async () => {
+  await cron.schedule(process.env['CRON_SCHEDULE'] ?? '* * * * *', async () => {
     const webhookCollections = await Promise.all(
       client.guilds.cache.map(async guild => {
         const webhooks = await guild.fetchWebhooks();
