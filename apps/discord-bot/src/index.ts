@@ -63,42 +63,46 @@ client.on('guildCreate', async guild => {
 client.once(Events.ClientReady, async client => {
   await client.application.commands.set(commands);
 
-  await cron.schedule(process.env['CRON_SCHEDULE'] ?? '* * * * *', async () => {
-    const webhookCollections = await Promise.all(
-      client.guilds.cache.map(async guild => {
-        const webhooks = await guild.fetchWebhooks();
+  await cron.schedule(
+    process.env['CRON_SCHEDULE'] ?? '* * * * *',
+    async () => {
+      const webhookCollections = await Promise.all(
+        client.guilds.cache.map(async guild => {
+          const webhooks = await guild.fetchWebhooks();
 
-        return webhooks.filter(webhook => client.user && webhook.owner?.id === client.user.id);
-      }),
-    );
-    const webhooks = webhookCollections.flatMap(webhookCollection => webhookCollection.map(webhook => webhook));
+          return webhooks.filter(webhook => client.user && webhook.owner?.id === client.user.id);
+        }),
+      );
+      const webhooks = webhookCollections.flatMap(webhookCollection => webhookCollection.map(webhook => webhook));
 
-    await Promise.all(
-      webhooks.map(async webhook => {
-        await viewingSummary(
-          async userId => {
-            const guild = await client.guilds.fetch(webhook.guildId);
+      await Promise.all(
+        webhooks.map(async webhook => {
+          await viewingSummary(
+            async userId => {
+              const guild = await client.guilds.fetch(webhook.guildId);
 
-            return await guild.members.fetch(userId);
-          },
-          async embeds => {
-            await webhook.send({ embeds });
-          },
-        );
+              return await guild.members.fetch(userId);
+            },
+            async embeds => {
+              await webhook.send({ embeds });
+            },
+          );
 
-        await viewingRandom(
-          async userId => {
-            const guild = await client.guilds.fetch(webhook.guildId);
+          await viewingRandom(
+            async userId => {
+              const guild = await client.guilds.fetch(webhook.guildId);
 
-            return await guild.members.fetch(userId);
-          },
-          async embeds => {
-            await webhook.send({ embeds });
-          },
-        );
-      }),
-    );
-  });
+              return await guild.members.fetch(userId);
+            },
+            async embeds => {
+              await webhook.send({ embeds });
+            },
+          );
+        }),
+      );
+    },
+    { timezone: 'Asia/Tokyo' },
+  );
 
   // biome-ignore lint/suspicious/noConsoleLog: This log is necessary to verify that the server is running properly.
   console.log(`IkihajiTube Bot is running as ${client.user.tag} 🚀`);
