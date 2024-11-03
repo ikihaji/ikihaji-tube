@@ -1,73 +1,92 @@
-import { Client, Events, GatewayIntentBits } from 'discord.js';
-import { handleRandomCommand } from './commands/random';
-import { handleRegisterCommand } from './commands/register';
-import { handleRelationCommand } from './commands/relation';
+import { type ApplicationCommandData, Client, Events, GatewayIntentBits } from 'discord.js';
+import cron from 'node-cron';
+import { match } from 'ts-pattern';
+import { registerCommand } from './command/register';
+import { viewingRandom, viewingRandomCommand } from './command/viewing-random';
+import { viewingSummary, viewingSummaryCommand } from './command/viewing-summary';
 
 export const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildWebhooks,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
-// guildCreateイベントのリスナー
-client.on('guildCreate', async guild => {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(`Joined a new guild: ${guild.name} (ID: ${guild.id})`);
+const commands = [
+  {
+    name: 'register',
+    description: 'Register a channel that IkihajiTube will run periodically.',
+  },
+  {
+    name: 'viewing_random',
+    description: 'Randomly display video that have been viewed by someone else.',
+  },
+  {
+    name: 'viewing_summary',
+    description: 'Display videos viewed by multiple users.',
+  },
+] as const satisfies ApplicationCommandData[];
 
-  // スラッシュコマンドを登録する処理
-  const commands = [
-    {
-      name: 'ping',
-      description: 'Replies with Pong!',
-    },
-    {
-      name: 'relation',
-      description: 'Get videos that relation to more than two users in ikihajiTube.',
-    },
-    {
-      name: 'random',
-      description: 'Get random videos that users in ikihajiTube watched.',
-    },
-    {
-      name: 'register',
-      description: 'Register a channel that ikihajiTube works in by using /register',
-    },
-  ];
-
-  try {
-    // スラッシュコマンドをそのギルドに登録
-    await guild.commands.set(commands);
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log('Commands registered successfully.');
-  } catch (error) {
-    console.error('Error registering commands:', error);
-  }
-});
-
-// スラッシュコマンドを受け取ったときのイベント
 client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isCommand()) return;
-
-  const { commandName } = interaction;
-
-  if (commandName === 'ping') {
-    await interaction.reply('pong');
+  if (!interaction.isCommand()) {
+    return;
   }
 
-  if (commandName === 'relation') {
-    await handleRelationCommand(interaction, client);
-  }
-
-  if (commandName === 'random') {
-    await handleRandomCommand(interaction, client);
-  }
-
-  if (commandName === 'register') {
-    handleRegisterCommand(interaction, client);
-  }
+  match(interaction.commandName as (typeof commands)[number]['name'])
+    .with('register', () => registerCommand(interaction, client))
+    .with('viewing_random', () => viewingRandomCommand(interaction))
+    .with('viewing_summary', () => viewingSummaryCommand(interaction))
+    .exhaustive();
 });
 
-client.once(Events.ClientReady, c => {
+client.on('guildCreate', async guild => {
+  await guild.commands.set(commands);
+});
+
+client.once(Events.ClientReady, async client => {
+  await client.application.commands.set(commands);
+
+  await cron.schedule(process.env['CRON_SCHEDULE']!, async () => {
+    const webhookCollections = await Promise.all(
+      client.guilds.cache.map(async guild => {
+        const webhooks = await guild.fetchWebhooks();
+
+        return webhooks.filter(webhook => client.user && webhook.owner?.id === client.user.id);
+      }),
+    );
+    const webhooks = webhookCollections.flatMap(webhookCollection => webhookCollection.map(webhook => webhook));
+
+    await Promise.all(
+      webhooks.map(async webhook => {
+        await viewingSummary(
+          async userId => {
+            const guild = await client.guilds.fetch(webhook.guildId);
+
+            return await guild.members.fetch(userId);
+          },
+          async embeds => {
+            await webhook.send({ embeds });
+          },
+        );
+
+        await viewingRandom(
+          async userId => {
+            const guild = await client.guilds.fetch(webhook.guildId);
+
+            return await guild.members.fetch(userId);
+          },
+          async embeds => {
+            await webhook.send({ embeds });
+          },
+        );
+      }),
+    );
+  });
+
   // biome-ignore lint/suspicious/noConsoleLog: This log is necessary to verify that the server is running properly.
-  console.log(`IkihajiTube Bot is running as ${c.user.tag} 🚀`);
+  console.log(`IkihajiTube Bot is running as ${client.user.tag} 🚀`);
 });
 
 client.login(process.env['DISCORD_TOKEN']);
