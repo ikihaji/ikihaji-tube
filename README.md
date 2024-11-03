@@ -2,7 +2,7 @@
 
 # IkihajiTube 📺
 
-IkihajiTube は、自身の YouTube の視聴履歴を晒すことで身内との仲をより深めることができるアプリケーションです。
+IkihajiTube は、自身の YouTube の視聴履歴 (生き恥) を晒すことで友達との仲をより深めることができるアプリケーションです。
 
 ## Setup with Dev Containers 📦
 
