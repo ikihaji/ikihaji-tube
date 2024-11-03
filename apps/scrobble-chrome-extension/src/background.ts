@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(message => {
 
       const res = await client.api
         .users({
-          id: '1077274231693389875',
+          id: '699659576349294633',
         })
         ['viewing-history'].post([video]);
 
