@@ -10,13 +10,13 @@
     "128": "./asset/icon-128.png"
   },
   "permissions": ["scripting", "activeTab"],
-  "host_permissions": ["https://www.youtube.com/*"],
+  "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "./dist/background.js"
   },
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*"],
+      "matches": ["<all_urls>"],
       "js": ["./dist/content.js"]
     }
   ]
