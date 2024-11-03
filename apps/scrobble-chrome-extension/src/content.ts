@@ -18,7 +18,7 @@ import type { Video } from '@ikihaji-tube/core/model';
         action: 'push-video-to-viewing-history',
         data: {
           id: videoId ?? '',
-          title: videoTitle!,
+          title: videoTitle ?? '',
           thumbnailUrl: videoThumbnailUrl ?? '',
         } satisfies Video,
       });
