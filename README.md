@@ -76,3 +76,4 @@ bun install
 ```bash
 bun turbo run dev
 ```
+技育CAMPハッカソン2024 vol.17 努力賞受賞
